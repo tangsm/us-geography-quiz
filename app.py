@@ -120,11 +120,11 @@ QUIZ_BANK = [
 
 # Initialize Session State
 if 'selected_quiz' not in st.session_state:
-    # Randomly select 10 unique questions from the bank of 100
     st.session_state.selected_quiz = random.sample(QUIZ_BANK, 10)
     st.session_state.score = 0
     st.session_state.current_question_index = 0
     st.session_state.game_over = False
+    st.session_state.wrong_answers = [] # Store wrong answers here
 
 st.title("🇺🇸 The Great US Geography Challenge")
 st.markdown("10 Questions. Random Topics. Can you get a perfect score?")
@@ -144,7 +144,6 @@ if not st.session_state.game_over:
     
     # Display Options
     options = question_data['options']
-    # Shuffle options so the position of the correct answer changes every time
     random.shuffle(options)
     
     col1, col2 = st.columns(2)
@@ -159,6 +158,13 @@ if not st.session_state.game_over:
                 st.toast(f"✅ Correct! {question_data['fact']}", icon="🎉")
             else:
                 st.toast(f"❌ Wrong! The correct answer was **{question_data['answer']}**.", icon="⚠️")
+                # Record the wrong answer for review later
+                st.session_state.wrong_answers.append({
+                    "question": question_data['question'],
+                    "your_answer": option,
+                    "correct_answer": question_data['answer'],
+                    "fact": question_data['fact']
+                })
             
             # Advance Logic
             if st.session_state.current_question_index + 1 < 10:
@@ -194,6 +200,17 @@ else:
         
     st.divider()
     
+    # --- REVIEW SECTION ---
+    # Only show if there are wrong answers to review
+    if len(st.session_state.wrong_answers) > 0:
+        with st.expander("📝 Review Incorrect Answers (Click to Open)"):
+            for item in st.session_state.wrong_answers:
+                st.markdown(f"**Q:** {item['question']}")
+                st.markdown(f"❌ Your Answer: {item['your_answer']}")
+                st.markdown(f"✅ Correct Answer: **{item['correct_answer']}**")
+                st.caption(f"ℹ️ *Did you know? {item['fact']}*")
+                st.divider()
+    
     # Play Again Button
     if st.button("🔄 Play New Round (New Questions)", type="primary", use_container_width=True):
         # Reset state and pick 10 NEW random questions
@@ -201,4 +218,6 @@ else:
         st.session_state.score = 0
         st.session_state.current_question_index = 0
         st.session_state.game_over = False
+        st.session_state.wrong_answers = [] # Reset wrong answers
         st.rerun()
+        
