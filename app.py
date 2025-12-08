@@ -3,7 +3,7 @@ import random
 import time
 
 # ==========================================
-# 1. PAGE CONFIGURATION & K-POP DEMON STYLE
+# 1. PAGE CONFIGURATION & MOBILE OPTIMIZATION
 # ==========================================
 st.set_page_config(
     page_title="10 in a row!",
@@ -11,12 +11,18 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for "K-Pop Demon Hunter" (Neon, Dark, Edgy)
+# Custom CSS for "K-Pop Demon Hunter" (Mobile Optimized)
 st.markdown(
     """
     <style>
     /* Import futuristic font */
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Teko:wght@600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500&display=swap');
+
+    /* --- MOBILE OPTIMIZATION: REMOVE TOP PADDING --- */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
 
     /* --- MAIN BACKGROUND --- */
     .stApp {
@@ -25,41 +31,41 @@ st.markdown(
         color: #FFFFFF;
     }
 
-    /* --- MAIN TITLE --- */
+    /* --- COMPACT TITLE --- */
     .demon-header {
         font-family: 'Orbitron', sans-serif;
         color: #FF007F; /* Neon Pink */
-        text-shadow: 0 0 10px #FF007F, 0 0 20px #FF007F, 0 0 40px #FF007F; /* Glowing Effect */
+        text-shadow: 0 0 10px #FF007F;
         text-align: center;
-        font-size: 110px; /* Reverted to 110px */
+        font-size: 40px; /* Smaller to fit phone screen */
         line-height: 1.1;
-        margin-bottom: 10px;
-        letter-spacing: 2px;
+        margin-bottom: 5px;
         font-style: italic;
-        transform: skew(-10deg); /* Edgy slant */
+        transform: skew(-10deg);
     }
 
-    /* --- SUBTITLE QUOTE --- */
+    /* --- COMPACT SUBTITLE --- */
     .demon-sub {
         font-family: 'Teko', sans-serif;
         color: #00F3FF; /* Electric Cyan */
         text-align: center;
-        font-size: 35px; /* Reverted to 35px */
+        font-size: 18px; /* Smaller to save space */
         letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 30px;
-        text-shadow: 2px 2px #000000;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px #000000;
     }
     
-    /* --- MATH QUESTION --- */
+    /* --- MATH QUESTION (BIG BUT COMPACT) --- */
     .big-math {
-        font-size: 110px; 
+        font-size: 70px; /* Still very easy to read */
         font-weight: 900; 
         color: #FFFFFF;
-        text-shadow: 4px 4px 0px #6600cc; /* Purple Shadow */
+        text-shadow: 3px 3px 0px #6600cc;
         text-align: center;
-        margin-bottom: 25px;
+        margin-top: 0px;
+        margin-bottom: 10px;
         font-family: 'Orbitron', sans-serif;
+        line-height: 1;
     }
 
     /* --- SIDEBAR STYLING --- */
@@ -67,55 +73,45 @@ st.markdown(
         background-color: #0a0a0a;
         border-right: 1px solid #FF007F;
     }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2 {
         color: #FF007F !important;
         font-family: 'Orbitron', sans-serif !important;
     }
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stRadio {
+    [data-testid="stSidebar"] .stRadio, [data-testid="stSidebar"] label {
         color: #00F3FF !important;
         font-family: 'Teko', sans-serif !important;
-        font-size: 24px !important;
     }
 
-    /* --- BUTTON STYLING (THE ANSWERS) --- */
+    /* --- COMPACT BUTTONS (THE ANSWERS) --- */
     div.stButton > button {
-        font-size: 35px !important;
+        font-size: 30px !important; /* Large readable text */
         font-family: 'Orbitron', sans-serif !important;
-        height: 90px !important;
+        height: 65px !important; /* Shorter height to fit screen */
         width: 100%;
         color: #FFFFFF !important;
         background-color: #111111 !important;
-        border: 2px solid #00F3FF !important; /* Cyan Border */
-        border-radius: 0px !important; /* Sharp Edges for Demon Hunter look */
+        border: 2px solid #00F3FF !important;
+        border-radius: 4px !important;
+        margin-bottom: 0px !important;
         transition: all 0.2s ease;
-        text-transform: uppercase;
-        box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
     
-    /* Hover Effect for Buttons */
+    /* Hover Effect */
     div.stButton > button:hover {
-        transform: scale(1.03) skew(-5deg); /* Dynamic movement */
-        background-color: #FF007F !important; /* Pink on hover */
+        transform: scale(1.02);
+        background-color: #FF007F !important;
         border-color: #FFFFFF !important;
-        box-shadow: 0 0 20px #FF007F;
     }
     
-    /* Adjusting the progress bar color */
+    /* Progress Bar */
     .stProgress > div > div > div > div {
         background-image: linear-gradient(to right, #00F3FF, #FF007F);
+        height: 10px;
     }
     
-    /* Divider */
-    hr {
-        border-top: 2px solid #6600cc;
-    }
-    
-    /* Toast/Alert overrides */
-    div[data-baseweb="toast"] {
-        background-color: #111;
-        border: 1px solid #FF007F;
-        color: #FFF;
-    }
+    /* Hide the default hamburger menu to save space if desired (optional) */
+    /* #MainMenu {visibility: hidden;} */
+    /* footer {visibility: hidden;} */
     </style>
     """,
     unsafe_allow_html=True
@@ -132,7 +128,7 @@ def generate_problem(category):
     if category == "Combo Breaker (Multiplication)":
         num1 = random.randint(2, 12)
         num2 = random.randint(2, 12)
-        question = f"{num1} × {num2} = ?"
+        question = f"{num1} × {num2}"
         correct_answer = num1 * num2
         explanation = f"{num1} hits of {num2} damage is {correct_answer}!"
         
@@ -156,7 +152,7 @@ def generate_problem(category):
     elif category == "Boss Raid (Big Addition)":
         num1 = random.randint(50, 400)
         num2 = random.randint(50, 400)
-        question = f"{num1} + {num2} = ?"
+        question = f"{num1} + {num2}"
         correct_answer = num1 + num2
         explanation = f"Total HP recovered: {correct_answer}."
         
@@ -199,18 +195,17 @@ if 'game_over' not in st.session_state:
     st.session_state.game_over = False
 
 # ==========================================
-# 4. UI HEADER (DEMON STYLE)
+# 4. UI HEADER (COMPACT)
 # ==========================================
 
 st.markdown('<p class="demon-header">10 IN A ROW!</p>', unsafe_allow_html=True)
-st.markdown('<p class="demon-sub">"SILENCE THE DOUBT. SLAY THE BEAT. HUNT THE ANSWERS."</p>', unsafe_allow_html=True)
-st.divider()
+st.markdown('<p class="demon-sub">SILENCE THE DOUBT. HUNT THE ANSWERS.</p>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
     st.header("⚙️ MISSION SELECT")
     new_category = st.radio(
-        "Choose Your Arena:",
+        "Arena:",
         ("Combo Breaker (Multiplication)", "Limit Break (Exponents)", "Boss Raid (Big Addition)")
     )
     
@@ -220,7 +215,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    if st.button("🔄 RESPAWN (RESTART)"):
+    if st.button("🔄 RESPAWN"):
         reset_game()
         st.rerun()
 
@@ -240,19 +235,19 @@ if st.session_state.game_over:
     # Demon-themed Feedback
     if percentage == 100:
         st.balloons()
-        st.markdown(f"<h1 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h1>", unsafe_allow_html=True)
-        st.success("MAXIMUM COMBO! YOU ARE UNSTOPPABLE! (100%)")
+        st.markdown(f"<h2 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h2>", unsafe_allow_html=True)
+        st.success("MAXIMUM COMBO! (100%)")
     elif percentage >= 80:
-        st.markdown(f"<h1 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h1>", unsafe_allow_html=True)
-        st.info("Excellent hunting. You cleared the stage.")
+        st.markdown(f"<h2 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h2>", unsafe_allow_html=True)
+        st.info("Excellent hunting.")
     else:
-        st.markdown(f"<h1 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h1>", unsafe_allow_html=True)
-        st.warning("Your training isn't over. Respawn and try again.")
+        st.markdown(f"<h2 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h2>", unsafe_allow_html=True)
+        st.warning("Respawn and try again.")
         
-    st.metric(label="MISSION SCORE", value=f"{percentage}%", delta=f"{final_score}/10 Kills")
+    st.metric(label="SCORE", value=f"{percentage}%", delta=f"{final_score}/10")
     
     st.divider()
-    if st.button("PLAY AGAIN (NEW MISSION)", type="primary", use_container_width=True):
+    if st.button("PLAY AGAIN", type="primary", use_container_width=True):
         reset_game()
         st.rerun()
 
@@ -261,12 +256,14 @@ else:
     problem = st.session_state.current_problem
     q_num = st.session_state.question_count + 1
     
-    st.write(f"**WAVE {q_num} / 10**")
+    # Compact Progress
     st.progress(st.session_state.question_count / 10)
+    st.caption(f"WAVE {q_num} / 10")
     
     # Big Math Display
     st.markdown(f'<div class="big-math">{problem["question"]}</div>', unsafe_allow_html=True)
     
+    # Options grid
     col1, col2 = st.columns(2)
     options = problem['options']
     
@@ -277,10 +274,10 @@ else:
             # Check Answer
             if option == problem['answer']:
                 st.session_state.score += 1
-                st.toast(f"🔥 CRITICAL HIT! {problem['explanation']}", icon="⚔️")
+                st.toast(f"🔥 HIT!", icon="⚔️")
             else:
-                st.toast(f"💀 MISS! The answer was {problem['answer']}.", icon="💢")
-                time.sleep(1)
+                st.toast(f"💀 MISS! Ans: {problem['answer']}", icon="💢")
+                time.sleep(0.5)
             
             # Next Question Logic
             st.session_state.question_count += 1
@@ -290,9 +287,3 @@ else:
                 st.session_state.current_problem = generate_problem(st.session_state.game_category)
             
             st.rerun()
-
-    st.divider()
-    
-    if st.session_state.game_category == "Limit Break (Exponents)":
-        with st.expander("ℹ️ TUTORIAL: POWER MOVES"):
-            st.write(f"Remember: **{problem['question'][0]}²** means multiply the number by itself!")
