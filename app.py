@@ -278,7 +278,7 @@ if st.session_state.game_over:
     final_score = st.session_state.score
     percentage = int((final_score / 10) * 100)
     
-    # Demon-themed Feedback
+    # Demon-themed Feedback with Encouragement
     if percentage == 100:
         st.balloons()
         st.markdown(f"<h2 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h2>", unsafe_allow_html=True)
@@ -287,8 +287,9 @@ if st.session_state.game_over:
         st.markdown(f"<h2 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h2>", unsafe_allow_html=True)
         st.info(f"Excellent hunting.")
     else:
+        # --- NEW ENCOURAGING MESSAGE ---
         st.markdown(f"<h2 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h2>", unsafe_allow_html=True)
-        st.warning(f"Respawn and try again.")
+        st.warning("Mistakes are part of learning. Do you want to play again?")
     
     # --- CUSTOM HTML STATS DISPLAY (Colorful & Prominent) ---
     st.markdown(
