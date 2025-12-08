@@ -11,7 +11,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for "K-Pop Demon Hunter" (Fixed Layout)
+# Custom CSS for "K-Pop Demon Hunter" (Mobile Optimized)
 st.markdown(
     """
     <style>
@@ -20,7 +20,7 @@ st.markdown(
 
     /* --- FIX: INCREASE TOP PADDING SO TITLE ISN'T CUT OFF --- */
     .block-container {
-        padding-top: 3rem !important; /* Increased from 1rem to 3rem */
+        padding-top: 3rem !important; 
         padding-bottom: 1rem !important;
     }
 
@@ -31,20 +31,21 @@ st.markdown(
         color: #FFFFFF;
     }
 
-    /* --- BIG COOL TITLE --- */
+    /* --- BIG TITLE (Optimized for Mobile Width) --- */
     .demon-header {
         font-family: 'Orbitron', sans-serif;
         color: #FF007F; /* Neon Pink */
         text-shadow: 0 0 15px #FF007F, 3px 3px 0px #000000; /* Glow + Shadow */
         text-align: center;
-        font-size: 65px; /* BIG FONT */
+        font-size: 48px; /* Reduced to fit on one mobile line */
         font-weight: 900;
-        line-height: 1.2; /* Increased line-height to prevent clipping */
+        line-height: 1.2; 
         margin-bottom: 5px;
         font-style: italic;
         transform: skew(-10deg);
         letter-spacing: -2px;
-        padding-top: 10px; /* Extra safety padding */
+        padding-top: 10px; 
+        white-space: nowrap; /* Forces one line */
     }
 
     /* --- SUBTITLE --- */
@@ -59,7 +60,7 @@ st.markdown(
         text-transform: uppercase;
     }
     
-    /* --- MATH QUESTION (BIG BUT COMPACT) --- */
+    /* --- MATH QUESTION --- */
     .big-math {
         font-size: 70px; 
         font-weight: 900; 
@@ -195,7 +196,7 @@ if 'game_over' not in st.session_state:
     st.session_state.game_over = False
 
 # ==========================================
-# 4. UI HEADER (BIG & COOL)
+# 4. UI HEADER
 # ==========================================
 
 st.markdown('<div class="demon-header">10 IN A ROW!</div>', unsafe_allow_html=True)
