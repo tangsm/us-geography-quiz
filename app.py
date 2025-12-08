@@ -19,10 +19,10 @@ st.markdown(
     .rumi-header {
         font-family: 'Zapfino', 'Brush Script MT', cursive; 
         color: #D4AC0D; /* Gold */
-        text-shadow: 3px 3px 5px #1A5276; /* Deep Teal Shadow */
+        text-shadow: 4px 4px 6px #1A5276; /* Deep Teal Shadow */
         text-align: center;
-        font-size: 110px; /* Huge Title */
-        line-height: 1.2;
+        font-size: 160px; /* MASSIVE TITLE */
+        line-height: 1.1;
         margin-bottom: 10px;
         padding-bottom: 0px;
     }
