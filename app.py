@@ -3,95 +3,118 @@ import random
 import time
 
 # ==========================================
-# 1. PAGE CONFIGURATION & RUMI STYLE
+# 1. PAGE CONFIGURATION & K-POP DEMON STYLE
 # ==========================================
 st.set_page_config(
     page_title="10 in a row!",
-    page_icon="🌀",
+    page_icon="⚔️",
     layout="centered"
 )
 
-# Custom CSS for "Rumi Style" (Elegant, Gold, Calligraphy)
+# Custom CSS for "K-Pop Demon Hunter" (Neon, Dark, Edgy)
 st.markdown(
     """
     <style>
-    /* --- MAIN TITLE & QUOTE --- */
-    .rumi-header {
-        font-family: 'Zapfino', 'Brush Script MT', cursive; 
-        color: #D4AC0D; /* Gold */
-        text-shadow: 4px 4px 6px #1A5276; /* Deep Teal Shadow */
+    /* Import futuristic font */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Teko:wght@600&display=swap');
+
+    /* --- MAIN BACKGROUND --- */
+    .stApp {
+        background-color: #050505;
+        background-image: linear-gradient(315deg, #050505 0%, #1a0b2e 74%);
+        color: #FFFFFF;
+    }
+
+    /* --- MAIN TITLE --- */
+    .demon-header {
+        font-family: 'Orbitron', sans-serif;
+        color: #FF007F; /* Neon Pink */
+        text-shadow: 0 0 10px #FF007F, 0 0 20px #FF007F, 0 0 40px #FF007F; /* Glowing Effect */
         text-align: center;
-        font-size: 160px; /* MASSIVE TITLE */
+        font-size: 110px; /* Reverted to 110px */
         line-height: 1.1;
         margin-bottom: 10px;
-        padding-bottom: 0px;
-    }
-    .rumi-sub {
-        font-family: 'Garamond', serif;
-        color: #1A5276; /* Deep Teal */
-        text-align: center;
-        font-size: 35px; /* Huge Quote */
+        letter-spacing: 2px;
         font-style: italic;
-        line-height: 1.4;
+        transform: skew(-10deg); /* Edgy slant */
+    }
+
+    /* --- SUBTITLE QUOTE --- */
+    .demon-sub {
+        font-family: 'Teko', sans-serif;
+        color: #00F3FF; /* Electric Cyan */
+        text-align: center;
+        font-size: 35px; /* Reverted to 35px */
+        letter-spacing: 1px;
+        text-transform: uppercase;
         margin-bottom: 30px;
+        text-shadow: 2px 2px #000000;
     }
     
     /* --- MATH QUESTION --- */
     .big-math {
-        font-size: 100px; 
-        font-weight: bold; 
-        color: #D4AC0D; /* Gold numbers */
-        text-shadow: 2px 2px 2px #000000;
+        font-size: 110px; 
+        font-weight: 900; 
+        color: #FFFFFF;
+        text-shadow: 4px 4px 0px #6600cc; /* Purple Shadow */
         text-align: center;
         margin-bottom: 25px;
-        font-family: 'Courier New', monospace;
+        font-family: 'Orbitron', sans-serif;
     }
 
     /* --- SIDEBAR STYLING --- */
     [data-testid="stSidebar"] {
-        background-color: #F9F9F9;
-        border-right: 2px solid #D4AC0D;
+        background-color: #0a0a0a;
+        border-right: 1px solid #FF007F;
     }
-    /* Sidebar Headers */
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-        font-family: 'Zapfino', 'Brush Script MT', cursive !important;
-        color: #D4AC0D !important;
-        font-size: 35px !important;
-        text-align: center;
+        color: #FF007F !important;
+        font-family: 'Orbitron', sans-serif !important;
     }
-    /* Sidebar Text & Radio Buttons */
     [data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stRadio {
-        font-family: 'Garamond', serif !important;
-        color: #1A5276 !important;
-        font-size: 20px !important;
-        font-weight: bold;
+        color: #00F3FF !important;
+        font-family: 'Teko', sans-serif !important;
+        font-size: 24px !important;
     }
 
     /* --- BUTTON STYLING (THE ANSWERS) --- */
     div.stButton > button {
-        font-size: 32px !important; /* BIGGER ANSWER TEXT */
-        font-family: 'Garamond', serif !important;
-        font-weight: bold !important;
-        height: 80px !important; /* Taller buttons */
+        font-size: 35px !important;
+        font-family: 'Orbitron', sans-serif !important;
+        height: 90px !important;
         width: 100%;
-        color: #1A5276 !important; /* Deep Teal Text */
-        background-color: #FEF9E7 !important; /* Parchment Background */
-        border: 2px solid #D4AC0D !important; /* Gold Border */
-        border-radius: 10px !important;
-        transition: all 0.3s ease;
+        color: #FFFFFF !important;
+        background-color: #111111 !important;
+        border: 2px solid #00F3FF !important; /* Cyan Border */
+        border-radius: 0px !important; /* Sharp Edges for Demon Hunter look */
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
     
     /* Hover Effect for Buttons */
     div.stButton > button:hover {
-        transform: scale(1.02);
-        background-color: #D4AC0D !important;
-        color: white !important;
-        border-color: #1A5276 !important;
+        transform: scale(1.03) skew(-5deg); /* Dynamic movement */
+        background-color: #FF007F !important; /* Pink on hover */
+        border-color: #FFFFFF !important;
+        box-shadow: 0 0 20px #FF007F;
     }
     
     /* Adjusting the progress bar color */
     .stProgress > div > div > div > div {
-        background-color: #D4AC0D;
+        background-image: linear-gradient(to right, #00F3FF, #FF007F);
+    }
+    
+    /* Divider */
+    hr {
+        border-top: 2px solid #6600cc;
+    }
+    
+    /* Toast/Alert overrides */
+    div[data-baseweb="toast"] {
+        background-color: #111;
+        border: 1px solid #FF007F;
+        color: #FFF;
     }
     </style>
     """,
@@ -105,37 +128,37 @@ st.markdown(
 def generate_problem(category):
     """Generates a random math problem based on the category."""
     
-    # --- MULTIPLICATION (Tables 1-12) ---
-    if category == "Multiplication ✖️":
+    # --- MULTIPLICATION ---
+    if category == "Combo Breaker (Multiplication)":
         num1 = random.randint(2, 12)
         num2 = random.randint(2, 12)
         question = f"{num1} × {num2} = ?"
         correct_answer = num1 * num2
-        explanation = f"{num1} groups of {num2} is {correct_answer}."
+        explanation = f"{num1} hits of {num2} damage is {correct_answer}!"
         
         wrong1 = correct_answer + random.randint(1, 5)
         wrong2 = correct_answer - random.randint(1, 5)
         wrong3 = (num1 + 1) * num2 
         
-    # --- EXPONENTS (Super Powers) ---
-    elif category == "Exponents (Super Powers) 🌀":
+    # --- EXPONENTS ---
+    elif category == "Limit Break (Exponents)":
         base = random.randint(2, 10)
         exponent = 2 
         question = f"{base}²"
         correct_answer = base ** exponent
-        explanation = f"{base}² means {base} × {base}, which equals {correct_answer}."
+        explanation = f"{base}² is a power move: {base} × {base} = {correct_answer}!"
         
         wrong1 = base * 2          
         wrong2 = base + 2          
         wrong3 = (base + 1) ** 2   
         
-    # --- ADDITION CHALLENGE ---
-    elif category == "Big Addition ➕":
+    # --- ADDITION ---
+    elif category == "Boss Raid (Big Addition)":
         num1 = random.randint(50, 400)
         num2 = random.randint(50, 400)
         question = f"{num1} + {num2} = ?"
         correct_answer = num1 + num2
-        explanation = f"{num1} plus {num2} equals {correct_answer}."
+        explanation = f"Total HP recovered: {correct_answer}."
         
         wrong1 = correct_answer + 10
         wrong2 = correct_answer - 10
@@ -171,25 +194,24 @@ if 'question_count' not in st.session_state:
 if 'current_problem' not in st.session_state:
     st.session_state.current_problem = None
 if 'game_category' not in st.session_state:
-    st.session_state.game_category = "Multiplication ✖️"
+    st.session_state.game_category = "Combo Breaker (Multiplication)"
 if 'game_over' not in st.session_state:
     st.session_state.game_over = False
 
 # ==========================================
-# 4. UI HEADER (RUMI STYLE)
+# 4. UI HEADER (DEMON STYLE)
 # ==========================================
 
-# Rumi Style Header with increased sizing
-st.markdown('<p class="rumi-header">10 in a row!</p>', unsafe_allow_html=True)
-st.markdown('<p class="rumi-sub">"Raise your words, not your voice. It is rain that grows flowers, not thunder."</p>', unsafe_allow_html=True)
+st.markdown('<p class="demon-header">10 IN A ROW!</p>', unsafe_allow_html=True)
+st.markdown('<p class="demon-sub">"SILENCE THE DOUBT. SLAY THE BEAT. HUNT THE ANSWERS."</p>', unsafe_allow_html=True)
 st.divider()
 
 # Sidebar
 with st.sidebar:
-    st.header("⚙️ Settings")
+    st.header("⚙️ MISSION SELECT")
     new_category = st.radio(
-        "Choose your Path:",
-        ("Multiplication ✖️", "Exponents (Super Powers) 🌀", "Big Addition ➕")
+        "Choose Your Arena:",
+        ("Combo Breaker (Multiplication)", "Limit Break (Exponents)", "Boss Raid (Big Addition)")
     )
     
     if new_category != st.session_state.game_category:
@@ -198,7 +220,7 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    if st.button("🔄 Start New Journey"):
+    if st.button("🔄 RESPAWN (RESTART)"):
         reset_game()
         st.rerun()
 
@@ -215,22 +237,22 @@ if st.session_state.game_over:
     final_score = st.session_state.score
     percentage = int((final_score / 10) * 100)
     
-    # Rumi-themed Feedback
+    # Demon-themed Feedback
     if percentage == 100:
         st.balloons()
-        st.markdown(f"<h1 style='text-align: center; color: #D4AC0D;'>🌟 Perfect! 🌟</h1>", unsafe_allow_html=True)
-        st.success("You have found the treasure within! (100%)")
+        st.markdown(f"<h1 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h1>", unsafe_allow_html=True)
+        st.success("MAXIMUM COMBO! YOU ARE UNSTOPPABLE! (100%)")
     elif percentage >= 80:
-        st.markdown(f"<h1 style='text-align: center; color: #1A5276;'>Excellent!</h1>", unsafe_allow_html=True)
-        st.info("You are very close to the stars! Keep climbing.")
+        st.markdown(f"<h1 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h1>", unsafe_allow_html=True)
+        st.info("Excellent hunting. You cleared the stage.")
     else:
-        st.markdown(f"<h1 style='text-align: center; color: #C0392B;'>Good Journey!</h1>", unsafe_allow_html=True)
-        st.warning("Mistakes are just steps on the path of learning.")
+        st.markdown(f"<h1 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h1>", unsafe_allow_html=True)
+        st.warning("Your training isn't over. Respawn and try again.")
         
-    st.metric(label="Final Score", value=f"{percentage}%", delta=f"{final_score}/10")
+    st.metric(label="MISSION SCORE", value=f"{percentage}%", delta=f"{final_score}/10 Kills")
     
     st.divider()
-    if st.button("Play Again (New Questions)", type="primary", use_container_width=True):
+    if st.button("PLAY AGAIN (NEW MISSION)", type="primary", use_container_width=True):
         reset_game()
         st.rerun()
 
@@ -239,7 +261,7 @@ else:
     problem = st.session_state.current_problem
     q_num = st.session_state.question_count + 1
     
-    st.write(f"**Step {q_num} of 10**")
+    st.write(f"**WAVE {q_num} / 10**")
     st.progress(st.session_state.question_count / 10)
     
     # Big Math Display
@@ -255,9 +277,9 @@ else:
             # Check Answer
             if option == problem['answer']:
                 st.session_state.score += 1
-                st.toast(f"✅ Correct! {problem['explanation']}", icon="🌟")
+                st.toast(f"🔥 CRITICAL HIT! {problem['explanation']}", icon="⚔️")
             else:
-                st.toast(f"❌ Not quite. The answer was {problem['answer']}.", icon="🌀")
+                st.toast(f"💀 MISS! The answer was {problem['answer']}.", icon="💢")
                 time.sleep(1)
             
             # Next Question Logic
@@ -271,6 +293,6 @@ else:
 
     st.divider()
     
-    if st.session_state.game_category == "Exponents (Super Powers) 🌀":
-        with st.expander("ℹ️ The Secret of the Square"):
-            st.write(f"Remember: **{problem['question'][0]}²** is not adding. It is multiplying the number by itself.")
+    if st.session_state.game_category == "Limit Break (Exponents)":
+        with st.expander("ℹ️ TUTORIAL: POWER MOVES"):
+            st.write(f"Remember: **{problem['question'][0]}²** means multiply the number by itself!")
