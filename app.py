@@ -11,16 +11,16 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for "K-Pop Demon Hunter" (Mobile Optimized)
+# Custom CSS for "K-Pop Demon Hunter" (Fixed Layout)
 st.markdown(
     """
     <style>
     /* Import futuristic font */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500&display=swap');
 
-    /* --- MOBILE OPTIMIZATION: REMOVE TOP PADDING --- */
+    /* --- FIX: INCREASE TOP PADDING SO TITLE ISN'T CUT OFF --- */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 3rem !important; /* Increased from 1rem to 3rem */
         padding-bottom: 1rem !important;
     }
 
@@ -39,11 +39,12 @@ st.markdown(
         text-align: center;
         font-size: 65px; /* BIG FONT */
         font-weight: 900;
-        line-height: 1.0;
+        line-height: 1.2; /* Increased line-height to prevent clipping */
         margin-bottom: 5px;
         font-style: italic;
         transform: skew(-10deg);
         letter-spacing: -2px;
+        padding-top: 10px; /* Extra safety padding */
     }
 
     /* --- SUBTITLE --- */
