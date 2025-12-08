@@ -1,8 +1,52 @@
 import streamlit as st
 import random
+import time
 
 # ==========================================
-# 1. HELPER FUNCTIONS
+# 1. PAGE CONFIGURATION & RUMI STYLE
+# ==========================================
+st.set_page_config(
+    page_title="10 in a row!",
+    page_icon="🌀",
+    layout="centered"
+)
+
+# Custom CSS for "Rumi Style" (Elegant, Gold, Calligraphy)
+st.markdown(
+    """
+    <style>
+    .rumi-header {
+        font-family: 'Zapfino', 'Brush Script MT', cursive; 
+        color: #D4AC0D; /* Gold */
+        text-shadow: 2px 2px 4px #1A5276; /* Deep Teal Shadow */
+        text-align: center;
+        font-size: 70px;
+        margin-bottom: 0px;
+        padding-bottom: 10px;
+    }
+    .rumi-sub {
+        font-family: 'Garamond', serif;
+        color: #1A5276; /* Deep Teal */
+        text-align: center;
+        font-size: 20px;
+        font-style: italic;
+    }
+    .big-math {
+        font-size: 90px; 
+        font-weight: bold; 
+        color: #D4AC0D; /* Gold numbers */
+        text-shadow: 1px 1px 2px #000000;
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Courier New', monospace;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# ==========================================
+# 2. HELPER FUNCTIONS
 # ==========================================
 
 def generate_problem(category):
@@ -16,26 +60,23 @@ def generate_problem(category):
         correct_answer = num1 * num2
         explanation = f"{num1} groups of {num2} is {correct_answer}."
         
-        # Generate generic wrong options
         wrong1 = correct_answer + random.randint(1, 5)
         wrong2 = correct_answer - random.randint(1, 5)
         wrong3 = (num1 + 1) * num2 
         
-    # --- EXPONENTS (Introductory Squares) ---
-    elif category == "Exponents (Super Powers) 🚀":
-        # Keep base numbers small for 3rd graders (2 to 10)
+    # --- EXPONENTS (Super Powers) ---
+    elif category == "Exponents (Super Powers) 🌀":
         base = random.randint(2, 10)
-        exponent = 2 # Keep it to 'squares' for this age group
-        question = f"{base}² (What is {base} to the power of 2?)"
+        exponent = 2 
+        question = f"{base}²"
         correct_answer = base ** exponent
         explanation = f"{base}² means {base} × {base}, which equals {correct_answer}."
         
-        # Common mistakes as distractors
-        wrong1 = base * 2          # The most common mistake (adding instead of multiplying)
-        wrong2 = base + 2          # Adding the exponent
-        wrong3 = (base + 1) ** 2   # The next square up
+        wrong1 = base * 2          
+        wrong2 = base + 2          
+        wrong3 = (base + 1) ** 2   
         
-    # --- ADDITION CHALLENGE (3-digit) ---
+    # --- ADDITION CHALLENGE ---
     elif category == "Big Addition ➕":
         num1 = random.randint(50, 400)
         num2 = random.randint(50, 400)
@@ -47,9 +88,7 @@ def generate_problem(category):
         wrong2 = correct_answer - 10
         wrong3 = correct_answer + random.choice([-1, 1, -2, 2])
 
-    # Ensure options are unique and shuffle them
     options = list({correct_answer, wrong1, wrong2, wrong3})
-    # If duplicates resulted in fewer than 4 options, fill with randoms
     while len(options) < 4:
         options.append(correct_answer + random.randint(5, 20))
     
@@ -62,100 +101,123 @@ def generate_problem(category):
         "explanation": explanation
     }
 
+def reset_game():
+    st.session_state.score = 0
+    st.session_state.question_count = 0
+    st.session_state.game_over = False
+    st.session_state.current_problem = generate_problem(st.session_state.game_category)
+
 # ==========================================
-# 2. APP STATE MANAGEMENT
+# 3. APP STATE MANAGEMENT
 # ==========================================
 
 if 'score' not in st.session_state:
     st.session_state.score = 0
-if 'streak' not in st.session_state:
-    st.session_state.streak = 0
+if 'question_count' not in st.session_state:
+    st.session_state.question_count = 0
 if 'current_problem' not in st.session_state:
     st.session_state.current_problem = None
 if 'game_category' not in st.session_state:
     st.session_state.game_category = "Multiplication ✖️"
+if 'game_over' not in st.session_state:
+    st.session_state.game_over = False
 
 # ==========================================
-# 3. UI LAYOUT
+# 4. UI HEADER (RUMI STYLE)
 # ==========================================
 
-st.title("🧮 Math Wizard Adventure")
-st.markdown("Pick a mode and see how high you can get your streak!")
+# Rumi Style Header
+st.markdown('<p class="rumi-header">10 in a row!</p>', unsafe_allow_html=True)
+st.markdown('<p class="rumi-sub">"Raise your words, not your voice. It is rain that grows flowers, not thunder."</p>', unsafe_allow_html=True)
+st.divider()
 
-# Sidebar for Settings
+# Sidebar
 with st.sidebar:
-    st.header("⚙️ Game Settings")
+    st.header("⚙️ Settings")
     new_category = st.radio(
-        "Choose your Challenge:",
-        ("Multiplication ✖️", "Exponents (Super Powers) 🚀", "Big Addition ➕")
+        "Choose your Path:",
+        ("Multiplication ✖️", "Exponents (Super Powers) 🌀", "Big Addition ➕")
     )
     
-    # If category changes, reset the question
     if new_category != st.session_state.game_category:
         st.session_state.game_category = new_category
-        st.session_state.current_problem = None
-        st.session_state.streak = 0
-        st.session_state.score = 0
+        reset_game()
         st.rerun()
 
     st.divider()
-    st.metric("🏆 Total Score", st.session_state.score)
-    st.metric("🔥 Current Streak", st.session_state.streak)
-    
-    if st.button("Reset Game"):
-        st.session_state.score = 0
-        st.session_state.streak = 0
-        st.session_state.current_problem = None
+    if st.button("🔄 Start New Journey"):
+        reset_game()
         st.rerun()
 
-# Generate a new problem if one doesn't exist
+# Initialize Game
 if st.session_state.current_problem is None:
     st.session_state.current_problem = generate_problem(st.session_state.game_category)
 
-problem = st.session_state.current_problem
+# ==========================================
+# 5. GAME LOGIC & SCREEN
+# ==========================================
 
-# Display the Question Area
-st.divider()
-st.markdown(f"<h1 style='text-align: center; color: #4F8BF9;'>{problem['question']}</h1>", unsafe_allow_html=True)
-st.divider()
+if st.session_state.game_over:
+    # --- SCORE REPORT ---
+    final_score = st.session_state.score
+    percentage = int((final_score / 10) * 100)
+    
+    # Rumi-themed Feedback
+    if percentage == 100:
+        st.balloons()
+        st.markdown(f"<h1 style='text-align: center; color: #D4AC0D;'>🌟 Perfect! 🌟</h1>", unsafe_allow_html=True)
+        st.success("You have found the treasure within! (100%)")
+    elif percentage >= 80:
+        st.markdown(f"<h1 style='text-align: center; color: #1A5276;'>Excellent!</h1>", unsafe_allow_html=True)
+        st.info("You are very close to the stars! Keep climbing.")
+    else:
+        st.markdown(f"<h1 style='text-align: center; color: #C0392B;'>Good Journey!</h1>", unsafe_allow_html=True)
+        st.warning("Mistakes are just steps on the path of learning.")
+        
+    st.metric(label="Final Score", value=f"{percentage}%", delta=f"{final_score}/10")
+    
+    st.divider()
+    if st.button("Play Again (New Questions)", type="primary", use_container_width=True):
+        reset_game()
+        st.rerun()
 
-# Option Buttons
-col1, col2 = st.columns(2)
-
-options = problem['options']
-
-for i, option in enumerate(options):
-    col = col1 if i % 2 == 0 else col2
-    if col.button(str(option), use_container_width=True):
-        if option == problem['answer']:
-            # CORRECT ANSWER
-            st.session_state.score += 10
-            st.session_state.streak += 1
-            st.toast(f"✅ Awesome! {problem['explanation']}", icon="🌟")
-            st.balloons()
-            # Generate new problem immediately
-            st.session_state.current_problem = generate_problem(st.session_state.game_category)
-            st.rerun()
-        else:
-            # WRONG ANSWER
-            st.toast("❌ Oops! Try again.", icon="🤔")
-            st.session_state.streak = 0 # Reset streak on wrong answer
-            st.error(f"Not quite! The answer was {problem['answer']}. ({problem['explanation']})")
+else:
+    # --- ACTIVE GAME ---
+    problem = st.session_state.current_problem
+    q_num = st.session_state.question_count + 1
+    
+    st.write(f"**Step {q_num} of 10**")
+    st.progress(st.session_state.question_count / 10)
+    
+    # Big Math Display
+    st.markdown(f'<div class="big-math">{problem["question"]}</div>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    options = problem['options']
+    
+    for i, option in enumerate(options):
+        col = col1 if i % 2 == 0 else col2
+        if col.button(str(option), use_container_width=True, key=f"btn_{i}"):
             
-            # Button to next question
-            if st.button("Next Question ➡️"):
+            # Check Answer
+            if option == problem['answer']:
+                st.session_state.score += 1
+                st.toast(f"✅ Correct! {problem['explanation']}", icon="🌟")
+            else:
+                st.toast(f"❌ Not quite. The answer was {problem['answer']}.", icon="🌀")
+                time.sleep(1)
+            
+            # Next Question Logic
+            st.session_state.question_count += 1
+            if st.session_state.question_count >= 10:
+                st.session_state.game_over = True
+            else:
                 st.session_state.current_problem = generate_problem(st.session_state.game_category)
-                st.rerun()
+            
+            st.rerun()
 
-# Explainer text for Exponents (since it's hard for 3rd graders)
-if st.session_state.game_category == "Exponents (Super Powers) 🚀":
-    with st.expander("ℹ️ What is a 'Super Power' (Exponent)?"):
-        st.write("""
-        When you see a little number floating above another number (like **3²**), that is an **Exponent**. 
-        
-        It means you multiply the big number by itself!
-        
-        *   **2²** = 2 × 2 = 4
-        *   **3²** = 3 × 3 = 9
-        *   **4²** = 4 × 4 = 16
-        """)
+    st.divider()
+    
+    if st.session_state.game_category == "Exponents (Super Powers) 🌀":
+        with st.expander("ℹ️ The Secret of the Square"):
+            st.write(f"Remember: **{problem['question'][0]}²** is not adding. It is multiplying the number by itself.")
