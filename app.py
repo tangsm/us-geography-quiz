@@ -31,13 +31,13 @@ st.markdown(
         color: #FFFFFF;
     }
 
-    /* --- BIG TITLE (Optimized for Mobile Width) --- */
+    /* --- BIG TITLE --- */
     .demon-header {
         font-family: 'Orbitron', sans-serif;
         color: #FF007F; /* Neon Pink */
         text-shadow: 0 0 15px #FF007F, 3px 3px 0px #000000; /* Glow + Shadow */
         text-align: center;
-        font-size: 48px; /* Reduced to fit on one mobile line */
+        font-size: 48px;
         font-weight: 900;
         line-height: 1.2; 
         margin-bottom: 5px;
@@ -45,7 +45,7 @@ st.markdown(
         transform: skew(-10deg);
         letter-spacing: -2px;
         padding-top: 10px; 
-        white-space: nowrap; /* Forces one line */
+        white-space: nowrap;
     }
 
     /* --- SUBTITLE --- */
@@ -73,6 +73,43 @@ st.markdown(
         line-height: 1;
     }
 
+    /* --- CUSTOM STATS BOXES (High Visibility) --- */
+    .stat-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .stat-box {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid #333;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        width: 48%;
+    }
+    .stat-label {
+        font-family: 'Teko', sans-serif;
+        color: #AAAAAA;
+        font-size: 20px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .stat-value-pink {
+        font-family: 'Orbitron', sans-serif;
+        color: #FF007F; /* Neon Pink */
+        font-size: 45px;
+        font-weight: 900;
+        text-shadow: 0 0 10px #FF007F;
+    }
+    .stat-value-cyan {
+        font-family: 'Orbitron', sans-serif;
+        color: #00F3FF; /* Cyan */
+        font-size: 45px;
+        font-weight: 900;
+        text-shadow: 0 0 10px #00F3FF;
+    }
+
     /* --- SIDEBAR STYLING --- */
     [data-testid="stSidebar"] {
         background-color: #0a0a0a;
@@ -89,9 +126,9 @@ st.markdown(
 
     /* --- COMPACT BUTTONS (THE ANSWERS) --- */
     div.stButton > button {
-        font-size: 30px !important; /* Large readable text */
+        font-size: 30px !important;
         font-family: 'Orbitron', sans-serif !important;
-        height: 65px !important; /* Shorter height to fit screen */
+        height: 65px !important;
         width: 100%;
         color: #FFFFFF !important;
         background-color: #111111 !important;
@@ -100,8 +137,6 @@ st.markdown(
         margin-bottom: 0px !important;
         transition: all 0.2s ease;
     }
-    
-    /* Hover Effect */
     div.stButton > button:hover {
         transform: scale(1.02);
         background-color: #FF007F !important;
@@ -178,7 +213,7 @@ def reset_game():
     st.session_state.score = 0
     st.session_state.question_count = 0
     st.session_state.game_over = False
-    st.session_state.start_time = time.time() # Start the Timer
+    st.session_state.start_time = time.time()
     st.session_state.current_problem = generate_problem(st.session_state.game_category)
 
 # ==========================================
@@ -247,18 +282,30 @@ if st.session_state.game_over:
     if percentage == 100:
         st.balloons()
         st.markdown(f"<h2 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h2>", unsafe_allow_html=True)
-        st.success(f"MAXIMUM COMBO! (100%) in {time_str}")
+        st.success(f"MAXIMUM COMBO! (100%)")
     elif percentage >= 80:
         st.markdown(f"<h2 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h2>", unsafe_allow_html=True)
-        st.info(f"Excellent hunting. Time: {time_str}")
+        st.info(f"Excellent hunting.")
     else:
         st.markdown(f"<h2 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h2>", unsafe_allow_html=True)
-        st.warning(f"Respawn and try again. Time: {time_str}")
+        st.warning(f"Respawn and try again.")
     
-    # Dual Columns for Stats
-    c1, c2 = st.columns(2)
-    c1.metric(label="SCORE", value=f"{percentage}%", delta=f"{final_score}/10")
-    c2.metric(label="CLEAR TIME", value=time_str)
+    # --- CUSTOM HTML STATS DISPLAY (Colorful & Prominent) ---
+    st.markdown(
+        f"""
+        <div class="stat-container">
+            <div class="stat-box">
+                <div class="stat-label">Mission Score</div>
+                <div class="stat-value-pink">{percentage}%</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Clear Time</div>
+                <div class="stat-value-cyan">{time_str}</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
     st.divider()
     if st.button("PLAY AGAIN", type="primary", use_container_width=True):
@@ -270,7 +317,7 @@ else:
     problem = st.session_state.current_problem
     q_num = st.session_state.question_count + 1
     
-    # Calculate current running time for display
+    # Calculate current running time
     current_elapsed = int(time.time() - st.session_state.start_time)
     
     # Compact Progress & Info
@@ -281,7 +328,7 @@ else:
     with col_info1:
         st.caption(f"WAVE {q_num} / 10")
     with col_info2:
-        st.caption(f"⏱️ {current_elapsed}s") # Live timer indicator
+        st.caption(f"⏱️ {current_elapsed}s") 
     
     # Big Math Display
     st.markdown(f'<div class="big-math">{problem["question"]}</div>', unsafe_allow_html=True)
