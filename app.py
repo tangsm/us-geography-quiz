@@ -8,7 +8,7 @@ import time
 st.set_page_config(
     page_title="10 in a row!",
     page_icon="🌀",
-    layout="centered"
+    layout="wide"  # Changed to wide to accommodate the massive font
 )
 
 # Custom CSS for "Rumi Style" (Elegant, Gold, Calligraphy)
@@ -19,31 +19,33 @@ st.markdown(
     .rumi-header {
         font-family: 'Zapfino', 'Brush Script MT', cursive; 
         color: #D4AC0D; /* Gold */
-        text-shadow: 4px 4px 6px #1A5276; /* Deep Teal Shadow */
+        text-shadow: 5px 5px 0px #1A5276; /* Deep Teal Shadow (offset for readability) */
         text-align: center;
-        font-size: 160px; /* MASSIVE TITLE */
-        line-height: 1.1;
-        margin-bottom: 10px;
+        font-size: 350px; /* MASSIVE TITLE (approx 4x previous impact) */
+        line-height: 0.8; /* Tight line height to keep it on screen */
+        margin-bottom: 20px;
         padding-bottom: 0px;
+        letter-spacing: -5px;
     }
     .rumi-sub {
         font-family: 'Garamond', serif;
         color: #1A5276; /* Deep Teal */
         text-align: center;
-        font-size: 35px; /* Huge Quote */
+        font-size: 70px; /* DOUBLED QUOTE SIZE */
+        font-weight: bold;
         font-style: italic;
-        line-height: 1.4;
-        margin-bottom: 30px;
+        line-height: 1.1;
+        margin-bottom: 50px;
     }
     
     /* --- MATH QUESTION --- */
     .big-math {
-        font-size: 100px; 
+        font-size: 140px; 
         font-weight: bold; 
         color: #D4AC0D; /* Gold numbers */
-        text-shadow: 2px 2px 2px #000000;
+        text-shadow: 3px 3px 3px #000000;
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 40px;
         font-family: 'Courier New', monospace;
     }
 
@@ -56,28 +58,28 @@ st.markdown(
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
         font-family: 'Zapfino', 'Brush Script MT', cursive !important;
         color: #D4AC0D !important;
-        font-size: 35px !important;
+        font-size: 40px !important;
         text-align: center;
     }
     /* Sidebar Text & Radio Buttons */
     [data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stRadio {
         font-family: 'Garamond', serif !important;
         color: #1A5276 !important;
-        font-size: 20px !important;
+        font-size: 24px !important;
         font-weight: bold;
     }
 
     /* --- BUTTON STYLING (THE ANSWERS) --- */
     div.stButton > button {
-        font-size: 32px !important; /* BIGGER ANSWER TEXT */
+        font-size: 50px !important; /* Even Bigger Buttons to match scale */
         font-family: 'Garamond', serif !important;
         font-weight: bold !important;
-        height: 80px !important; /* Taller buttons */
+        height: 120px !important; /* Much Taller buttons */
         width: 100%;
         color: #1A5276 !important; /* Deep Teal Text */
         background-color: #FEF9E7 !important; /* Parchment Background */
-        border: 2px solid #D4AC0D !important; /* Gold Border */
-        border-radius: 10px !important;
+        border: 4px solid #D4AC0D !important; /* Thicker Gold Border */
+        border-radius: 20px !important;
         transition: all 0.3s ease;
     }
     
@@ -92,6 +94,7 @@ st.markdown(
     /* Adjusting the progress bar color */
     .stProgress > div > div > div > div {
         background-color: #D4AC0D;
+        height: 20px;
     }
     </style>
     """,
@@ -218,13 +221,13 @@ if st.session_state.game_over:
     # Rumi-themed Feedback
     if percentage == 100:
         st.balloons()
-        st.markdown(f"<h1 style='text-align: center; color: #D4AC0D;'>🌟 Perfect! 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; font-size: 80px; color: #D4AC0D;'>🌟 Perfect! 🌟</h1>", unsafe_allow_html=True)
         st.success("You have found the treasure within! (100%)")
     elif percentage >= 80:
-        st.markdown(f"<h1 style='text-align: center; color: #1A5276;'>Excellent!</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; font-size: 80px; color: #1A5276;'>Excellent!</h1>", unsafe_allow_html=True)
         st.info("You are very close to the stars! Keep climbing.")
     else:
-        st.markdown(f"<h1 style='text-align: center; color: #C0392B;'>Good Journey!</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; font-size: 80px; color: #C0392B;'>Good Journey!</h1>", unsafe_allow_html=True)
         st.warning("Mistakes are just steps on the path of learning.")
         
     st.metric(label="Final Score", value=f"{percentage}%", delta=f"{final_score}/10")
