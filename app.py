@@ -178,6 +178,7 @@ def reset_game():
     st.session_state.score = 0
     st.session_state.question_count = 0
     st.session_state.game_over = False
+    st.session_state.start_time = time.time() # Start the Timer
     st.session_state.current_problem = generate_problem(st.session_state.game_category)
 
 # ==========================================
@@ -194,6 +195,8 @@ if 'game_category' not in st.session_state:
     st.session_state.game_category = "Combo Breaker (Multiplication)"
 if 'game_over' not in st.session_state:
     st.session_state.game_over = False
+if 'start_time' not in st.session_state:
+    st.session_state.start_time = time.time()
 
 # ==========================================
 # 4. UI HEADER
@@ -229,6 +232,13 @@ if st.session_state.current_problem is None:
 # ==========================================
 
 if st.session_state.game_over:
+    # --- CALCULATE TIME ---
+    end_time = time.time()
+    total_time = end_time - st.session_state.start_time
+    minutes = int(total_time // 60)
+    seconds = int(total_time % 60)
+    time_str = f"{minutes}m {seconds}s" if minutes > 0 else f"{seconds}s"
+
     # --- SCORE REPORT ---
     final_score = st.session_state.score
     percentage = int((final_score / 10) * 100)
@@ -237,15 +247,18 @@ if st.session_state.game_over:
     if percentage == 100:
         st.balloons()
         st.markdown(f"<h2 style='text-align: center; color: #FF007F; font-family: Orbitron;'>⚔️ SSS RANK! ⚔️</h2>", unsafe_allow_html=True)
-        st.success("MAXIMUM COMBO! (100%)")
+        st.success(f"MAXIMUM COMBO! (100%) in {time_str}")
     elif percentage >= 80:
         st.markdown(f"<h2 style='text-align: center; color: #00F3FF; font-family: Orbitron;'>A RANK</h2>", unsafe_allow_html=True)
-        st.info("Excellent hunting.")
+        st.info(f"Excellent hunting. Time: {time_str}")
     else:
         st.markdown(f"<h2 style='text-align: center; color: #FFFFFF; font-family: Orbitron;'>GAME OVER</h2>", unsafe_allow_html=True)
-        st.warning("Respawn and try again.")
-        
-    st.metric(label="SCORE", value=f"{percentage}%", delta=f"{final_score}/10")
+        st.warning(f"Respawn and try again. Time: {time_str}")
+    
+    # Dual Columns for Stats
+    c1, c2 = st.columns(2)
+    c1.metric(label="SCORE", value=f"{percentage}%", delta=f"{final_score}/10")
+    c2.metric(label="CLEAR TIME", value=time_str)
     
     st.divider()
     if st.button("PLAY AGAIN", type="primary", use_container_width=True):
@@ -257,9 +270,18 @@ else:
     problem = st.session_state.current_problem
     q_num = st.session_state.question_count + 1
     
-    # Compact Progress
+    # Calculate current running time for display
+    current_elapsed = int(time.time() - st.session_state.start_time)
+    
+    # Compact Progress & Info
     st.progress(st.session_state.question_count / 10)
-    st.caption(f"WAVE {q_num} / 10")
+    
+    # Small stats row
+    col_info1, col_info2 = st.columns([1,1])
+    with col_info1:
+        st.caption(f"WAVE {q_num} / 10")
+    with col_info2:
+        st.caption(f"⏱️ {current_elapsed}s") # Live timer indicator
     
     # Big Math Display
     st.markdown(f'<div class="big-math">{problem["question"]}</div>', unsafe_allow_html=True)
