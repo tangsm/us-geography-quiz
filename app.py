@@ -15,30 +15,83 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    /* --- MAIN TITLE & QUOTE --- */
     .rumi-header {
         font-family: 'Zapfino', 'Brush Script MT', cursive; 
         color: #D4AC0D; /* Gold */
-        text-shadow: 2px 2px 4px #1A5276; /* Deep Teal Shadow */
+        text-shadow: 3px 3px 5px #1A5276; /* Deep Teal Shadow */
         text-align: center;
-        font-size: 70px;
-        margin-bottom: 0px;
-        padding-bottom: 10px;
+        font-size: 110px; /* Huge Title */
+        line-height: 1.2;
+        margin-bottom: 10px;
+        padding-bottom: 0px;
     }
     .rumi-sub {
         font-family: 'Garamond', serif;
         color: #1A5276; /* Deep Teal */
         text-align: center;
-        font-size: 20px;
+        font-size: 35px; /* Huge Quote */
         font-style: italic;
+        line-height: 1.4;
+        margin-bottom: 30px;
     }
+    
+    /* --- MATH QUESTION --- */
     .big-math {
-        font-size: 90px; 
+        font-size: 100px; 
         font-weight: bold; 
         color: #D4AC0D; /* Gold numbers */
-        text-shadow: 1px 1px 2px #000000;
+        text-shadow: 2px 2px 2px #000000;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         font-family: 'Courier New', monospace;
+    }
+
+    /* --- SIDEBAR STYLING --- */
+    [data-testid="stSidebar"] {
+        background-color: #F9F9F9;
+        border-right: 2px solid #D4AC0D;
+    }
+    /* Sidebar Headers */
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        font-family: 'Zapfino', 'Brush Script MT', cursive !important;
+        color: #D4AC0D !important;
+        font-size: 35px !important;
+        text-align: center;
+    }
+    /* Sidebar Text & Radio Buttons */
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stRadio {
+        font-family: 'Garamond', serif !important;
+        color: #1A5276 !important;
+        font-size: 20px !important;
+        font-weight: bold;
+    }
+
+    /* --- BUTTON STYLING (THE ANSWERS) --- */
+    div.stButton > button {
+        font-size: 32px !important; /* BIGGER ANSWER TEXT */
+        font-family: 'Garamond', serif !important;
+        font-weight: bold !important;
+        height: 80px !important; /* Taller buttons */
+        width: 100%;
+        color: #1A5276 !important; /* Deep Teal Text */
+        background-color: #FEF9E7 !important; /* Parchment Background */
+        border: 2px solid #D4AC0D !important; /* Gold Border */
+        border-radius: 10px !important;
+        transition: all 0.3s ease;
+    }
+    
+    /* Hover Effect for Buttons */
+    div.stButton > button:hover {
+        transform: scale(1.02);
+        background-color: #D4AC0D !important;
+        color: white !important;
+        border-color: #1A5276 !important;
+    }
+    
+    /* Adjusting the progress bar color */
+    .stProgress > div > div > div > div {
+        background-color: #D4AC0D;
     }
     </style>
     """,
@@ -126,7 +179,7 @@ if 'game_over' not in st.session_state:
 # 4. UI HEADER (RUMI STYLE)
 # ==========================================
 
-# Rumi Style Header
+# Rumi Style Header with increased sizing
 st.markdown('<p class="rumi-header">10 in a row!</p>', unsafe_allow_html=True)
 st.markdown('<p class="rumi-sub">"Raise your words, not your voice. It is rain that grows flowers, not thunder."</p>', unsafe_allow_html=True)
 st.divider()
@@ -221,3 +274,4 @@ else:
     if st.session_state.game_category == "Exponents (Super Powers) 🌀":
         with st.expander("ℹ️ The Secret of the Square"):
             st.write(f"Remember: **{problem['question'][0]}²** is not adding. It is multiplying the number by itself.")
+Use Arrow Up and Arrow Down to select a turn, Enter to jump to it, and Escape to return to the chat.
