@@ -274,4 +274,3 @@ else:
     if st.session_state.game_category == "Exponents (Super Powers) 🌀":
         with st.expander("ℹ️ The Secret of the Square"):
             st.write(f"Remember: **{problem['question'][0]}²** is not adding. It is multiplying the number by itself.")
-Use Arrow Up and Arrow Down to select a turn, Enter to jump to it, and Escape to return to the chat.
