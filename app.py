@@ -31,39 +31,42 @@ st.markdown(
         color: #FFFFFF;
     }
 
-    /* --- COMPACT TITLE --- */
+    /* --- BIG COOL TITLE --- */
     .demon-header {
         font-family: 'Orbitron', sans-serif;
         color: #FF007F; /* Neon Pink */
-        text-shadow: 0 0 10px #FF007F;
+        text-shadow: 0 0 15px #FF007F, 3px 3px 0px #000000; /* Glow + Shadow */
         text-align: center;
-        font-size: 40px; /* Smaller to fit phone screen */
-        line-height: 1.1;
+        font-size: 65px; /* BIG FONT */
+        font-weight: 900;
+        line-height: 1.0;
         margin-bottom: 5px;
         font-style: italic;
         transform: skew(-10deg);
+        letter-spacing: -2px;
     }
 
-    /* --- COMPACT SUBTITLE --- */
+    /* --- SUBTITLE --- */
     .demon-sub {
         font-family: 'Teko', sans-serif;
         color: #00F3FF; /* Electric Cyan */
         text-align: center;
-        font-size: 18px; /* Smaller to save space */
-        letter-spacing: 1px;
-        margin-bottom: 10px;
+        font-size: 20px; 
+        letter-spacing: 2px;
+        margin-bottom: 15px;
         text-shadow: 1px 1px #000000;
+        text-transform: uppercase;
     }
     
     /* --- MATH QUESTION (BIG BUT COMPACT) --- */
     .big-math {
-        font-size: 70px; /* Still very easy to read */
+        font-size: 70px; 
         font-weight: 900; 
         color: #FFFFFF;
-        text-shadow: 3px 3px 0px #6600cc;
+        text-shadow: 4px 4px 0px #6600cc;
         text-align: center;
         margin-top: 0px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         font-family: 'Orbitron', sans-serif;
         line-height: 1;
     }
@@ -108,10 +111,6 @@ st.markdown(
         background-image: linear-gradient(to right, #00F3FF, #FF007F);
         height: 10px;
     }
-    
-    /* Hide the default hamburger menu to save space if desired (optional) */
-    /* #MainMenu {visibility: hidden;} */
-    /* footer {visibility: hidden;} */
     </style>
     """,
     unsafe_allow_html=True
@@ -195,11 +194,11 @@ if 'game_over' not in st.session_state:
     st.session_state.game_over = False
 
 # ==========================================
-# 4. UI HEADER (COMPACT)
+# 4. UI HEADER (BIG & COOL)
 # ==========================================
 
-st.markdown('<p class="demon-header">10 IN A ROW!</p>', unsafe_allow_html=True)
-st.markdown('<p class="demon-sub">SILENCE THE DOUBT. HUNT THE ANSWERS.</p>', unsafe_allow_html=True)
+st.markdown('<div class="demon-header">10 IN A ROW!</div>', unsafe_allow_html=True)
+st.markdown('<div class="demon-sub">SILENCE THE DOUBT. HUNT THE ANSWERS.</div>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
